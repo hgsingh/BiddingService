@@ -19,4 +19,5 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.hibernate:hibernate-core:5.4.1.Final'
+	implementation 'org.springframework.data:spring-data-jpa:1.6.0.RELEASE'
 }
