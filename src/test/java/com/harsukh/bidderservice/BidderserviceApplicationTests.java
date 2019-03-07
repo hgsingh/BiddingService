@@ -73,9 +73,9 @@ public class BidderserviceApplicationTests {
 	}
 
 
-	@Test(expected = NestedServletException.class)
-	public void orderNotFound() throws Exception {
+	@Test
+	public void auctionItemEmpty() throws Exception {
 		mockMvc.perform(get("/auctionItems"))
-				.andExpect(status().is5xxServerError());
+				.andExpect(status().is2xxSuccessful());
 	}
 }
