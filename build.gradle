@@ -9,6 +9,12 @@ group = 'com.harsukh'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
 repositories {
 	mavenCentral()
 }
@@ -17,7 +23,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.hibernate:hibernate-core:5.4.1.Final'
-	implementation 'org.springframework.data:spring-data-jpa:1.6.0.RELEASE'
 }

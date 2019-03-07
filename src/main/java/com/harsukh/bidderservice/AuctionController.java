@@ -43,7 +43,7 @@ public class AuctionController {
         boolean alreadyPosted = auctionItemRepository.findAll().stream()
                 .anyMatch(predItem -> predItem.item.itemId.equals(itemReserve.item.itemId));
         if (Item.isValid(itemReserve.item) && !alreadyPosted) {
-            AuctionItem auctionItem = new AuctionItem(itemReserve.reservePrice, itemReserve.reservePrice, itemReserve.item);
+            AuctionItem auctionItem = new AuctionItem(itemReserve.reservePrice, null, itemReserve.item);
             auctionItemRepository.save(auctionItem);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(String.valueOf(auctionItem.auctionItemId));
         } else {
@@ -63,10 +63,27 @@ public class AuctionController {
         Optional<AuctionItem> auctionItemOptional =
                 auctionItemRepository.findById(bid.auctionItemId);
         if (auctionItemOptional.isPresent()) {
-            if (auctionItemOptional.get().reservePrice <= bid.maxAutoBidAmount) {
-                return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+            AuctionItem auctionItem = auctionItemOptional.get();
+            if (auctionItem.currentBid == null
+                    ||  auctionItem.reservePrice - bid.maxAutoBidAmount > 0) {
+                //current bid had not been set yet
+                auctionItem.currentBid = auctionItem.currentBid == null || bid.maxAutoBidAmount >
+                        auctionItem.currentBid ? bid.maxAutoBidAmount : auctionItem.currentBid;
+                auctionItemRepository.save(auctionItem);
+                if (auctionItem.reservePrice > bid.maxAutoBidAmount) {
+                    throw new IllegalArgumentException("Reserve price not met");
+                } else {
+                    biddingRepository.save(bid);
+                    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+                }
             } else {
-                throw new IllegalArgumentException("Reserve price not met");
+                if (auctionItem.reservePrice < bid.maxAutoBidAmount
+                        && Double.compare(biddingRepository.getMaxBid() - bid.maxAutoBidAmount, 1.00) >= 0) {
+                    auctionItemRepository.save(auctionItem);
+                    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+                } else {
+                    throw new IllegalArgumentException("You've been outbid");
+                }
             }
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

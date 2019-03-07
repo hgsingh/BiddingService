@@ -11,10 +11,10 @@ public class AuctionItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int auctionItemId;
     double reservePrice;
-    double currentBid;
+    Double currentBid;
     Item item;
 
-    public AuctionItem(double reservePrice, double currentBid, Item item) {
+    public AuctionItem(double reservePrice, Double currentBid, Item item) {
         this.item = item;
         this.reservePrice = reservePrice;
         this.currentBid = currentBid;
