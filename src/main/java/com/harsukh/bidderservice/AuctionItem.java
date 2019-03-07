@@ -1,9 +1,6 @@
 package com.harsukh.bidderservice;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class AuctionItem {
@@ -12,6 +9,7 @@ public class AuctionItem {
     int auctionItemId;
     double reservePrice;
     Double currentBid;
+    @OneToOne
     Item item;
 
     public AuctionItem(double reservePrice, Double currentBid, Item item) {
