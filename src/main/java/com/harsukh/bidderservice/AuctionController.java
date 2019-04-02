@@ -15,6 +15,7 @@ import java.util.function.Supplier;
 public class AuctionController {
     AuctionItemRepository auctionItemRepository;
     BiddingRepository biddingRepository;
+    BiddingManager biddingManager;
 
     @Autowired
     public AuctionController(AuctionItemRepository auctionItemRepository, BiddingRepository biddingRepository) {

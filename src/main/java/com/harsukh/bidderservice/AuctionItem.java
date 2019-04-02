@@ -9,7 +9,7 @@ public class AuctionItem {
     int auctionItemId;
     double reservePrice;
     Double currentBid;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     Item item;
 
     public AuctionItem(double reservePrice, Double currentBid, Item item) {

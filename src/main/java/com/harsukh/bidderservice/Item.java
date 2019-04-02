@@ -7,10 +7,11 @@ import javax.persistence.Id;
 
 @Entity
 public class Item {
+
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    int id;
-    String itemId;
-    String description;
+    public int id;
+    public String itemId;
+    public String description;
 
 
     static boolean isValid(Item item){
